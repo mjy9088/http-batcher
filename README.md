@@ -1,12 +1,8 @@
 # HTTP Batcher
 
-> HTTP Request Batcher for SPA
+HTTP Request Batcher for SPA
 
-There is better solution, Apollo.
-
-It's for _existing project not using GraphQL_
-
-[TOC]
+It's for existing project _not using GraphQL_ (maybe Apollo is better)
 
 ## Install
 
@@ -15,6 +11,34 @@ npm i http-batcher
 ```
 
 ## Usage
+
+Define type of arguments of request. any form, even `any` is allowed.
+
+```typescript
+// for example
+interface Request {
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  url: 'string';
+  parameter?: string;
+}
+```
+
+Create Batcher instance with previously defined type, and options
+
+```typescript
+const batcher = new Batcher<Request>(options);
+```
+
+and queue to the batcher instead of firing HTTP request
+
+```typescript
+batcher.queue({
+  method: 'GET',
+  url: './notice/top/1',
+});
+```
+
+## Example
 
 ```typescript
 const API_ENDPOINT = './api';
@@ -36,6 +60,10 @@ function batchRequest(data: APICall[]): Promise<any[]> {
   return XHR(API_ENDPOINT_BATCH, data);
 }
 
+/*
+ * Create Batcher instance
+ * See Options for details
+ */
 const defaultBatcher = new Batcher<APICall>({
   defaultDelay: 1,
   minDelay: 3,
@@ -58,6 +86,19 @@ export default function API<Key extends keyof API_DEFINITION>(
   return batcher.queue<API_DEFINITION[Key]['response']>([key, param]);
 }
 ```
+
+## Options
+
+- `defaultDelay` - Time to wait for others to be queued, by millisecond. _default 1_
+- `minDelay` - Minimum time to wait from the first queued time in the batch. _default 0_
+- `maxDelay` - Maximum time to wait from the first queued time. _required_
+- `maxCount` - Maximum batch size. _default Infinity, **UNSTABLE**_
+- **`process`** - Actual executor for queued tasks. _required_
+  - Function accepts **array of** the type of arguments of request and returns Promise for **array** contains each result
+  - Some pre/post processing (e.g. remove redundant request by idempotency) can also be performed here
+- `preferSingle` - If specified, used instead of `process` if count of requests of the batch is 1. _optional_
+  - Function accepts the type of arguments of request and returns Promise for the result
+  - Not required~~, but slight reduction in server side load can be expected?~~
 
 ## Requirements
 

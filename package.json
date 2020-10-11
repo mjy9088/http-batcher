@@ -3,7 +3,6 @@
   "name": "http-batcher",
   "displayName": "HTTP Batcher",
   "description": "HTTP Request Batcher for SPA",
-  "version": "0.0.1",
   "main": "./Batcher.ts",
   "license": "MIT",
   "author": {
@@ -15,7 +14,8 @@
     "type": "git",
     "url": "https://github.com/mjy9088/http-batcher.git"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "typescript": "^4.0.3"
   }
 }
