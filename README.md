@@ -1,8 +1,14 @@
+# DEPRECATED! Use [DataLoader](https://www.npmjs.com/package/dataloader) instead
+
+[DataLoader](https://www.npmjs.com/package/dataloader) is more actively maintained, use it instead.
+
 # HTTP Batcher
 
 HTTP Request Batcher for SPA
 
-It's for existing project _not using GraphQL_ (maybe Apollo is better)
+~~It's for existing project _not using GraphQL_ (maybe Apollo is better)~~
+
+Use [DataLoader](https://www.npmjs.com/package/dataloader) instead
 
 ## Install
 
